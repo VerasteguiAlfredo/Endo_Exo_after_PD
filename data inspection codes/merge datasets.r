@@ -6,21 +6,17 @@
 # =============================================================================
 
 library(readxl)
-library(readxl)
 library(dplyr)
 library(lubridate)
 
+# -----------------------------------------------------------------------------
+# 1. LOAD DATA
+# Update paths as needed
+# -----------------------------------------------------------------------------
+
 dm_data <- read_excel("C:/Users/M320532/Desktop/Research/SONC/Endo Exo after PD/Endo_Exo_after_PD/data/Diabetes_PD.xlsx")
+
 full_data <- read_excel("C:/Users/M320532/Desktop/Research/SONC/Endo Exo after PD/Endo_Exo_after_PD/data/pancreatectomy_db.xlsx")
-
-head(dm_data)
-head(full_data)
-
-str(dm_data)
-str(full_data)
-
-colnames(dm_data)
-colnames(full_data)
 
 # -----------------------------------------------------------------------------
 # 2. CLEAN dm_data
@@ -187,48 +183,96 @@ final_data <- merged_data %>%
     pancreatitis, pancreatitis_etiol,
     ppi, Steroids,
     ecog,
+    prior_gi_malig, prior_gi_malig_site,
+    other_malig, other_malig_specify,
+
+    # Pre-op workup / imaging (from full_data)
+    eus, eus_dt,
+    fna, fna_result,
+    preop_ct, preop_ct_dt,
+    preop_mri, preop_mri_dt,
+    pet, pet_dt,
+    lesion_max_cm,
 
     # Surgery details (from full_data)
     resection_type, laparoscopic, op_time, ebl, surgeon, asa,
     gland_texture, panc_duct_mm, cbd_mm,
     vein_resxn, splenectomy,
+    comcomitant_resxn, comcomitant_resxn_specify,
+    panc_transection_method,
+    drain_placement,
+    anast_method,
+    feeding_tube,
     icu_days, los,
+    prbc_intraop, prbc_postop,
+    tpn, tpn_days,
+
+    # Post-op adverse events -- medical (from full_data)
+    cardiac_comp, pulm_comp, resp_fail, renal_insuff,
+    uti, hep_comp, cerebral_comp, thrombosis,
+    mge, other_med_comp, other_med_comp_specify,
+    readmit, readmit_cause,
+    reop, reop_reason, reop_findings,
+
+    # Post-op adverse events -- surgical (from full_data)
     popf, popf_grade, dge, dge_grade, pph, pph_grade,
-    wound_inf, abd_abscess, cd_grade,
+    ileus, mp_thrombosis, abd_ischemia,
+    wound_inf, abd_abscess,
+    gastric_fistula, biliary_fistula,
+    surg_comp_other, surg_comp_specify,
+    cd_grade,
 
     # Pathology (from full_data)
     path_dx1_sub, path_dx1_specific,
     tumor_max, margin, lvi, pni,
+    pos_ln_n, total_ln_n,
     pt_stage_1, pn_stage_1,
+
+    # Oncologic treatment -- neoadjuvant (from full_data)
+    nat, nat_start_dt,
+    nat1_chemo_type, nat1_chemo_start_dt, nat1_chemo_end_dt, nat1_chemo_details,
+    nat2_chemo_type, nat2_chemo_start_dt, nat2_chemo_end_dt, nat2_chemo_details,
+    nat3_chemo_type, nat3_chemo_start_dt, nat3_chemo_end_dt, nat3_chemo_details,
+    nat_rt, nat_rt_start_dt, nat_rt_end_dt, nat_rt_details,
+    nat_response_grade,
+    ca199_preop_chemo, ca199_preop_chemo_nat,
+    initial_imaging_stage, initial_imaging_stage_dt,
+    stage_preop_nat, preop_stage_dt,
+
+    # Oncologic treatment -- adjuvant (from full_data)
+    systemic_chemo,
+    at1_chemo_type, at1_chemo_start_dt, at1_chemo_end_dt, at1_chemo_details,
+    at2_chemo_type, at2_chemo_start_dt, at2_chemo_end_dt, at2_chemo_details,
+    at3_chemo_type, at3_chemo_start_dt, at3_chemo_end_dt, at3_chemo_details,
+    at_rt, at_rt_start_dt, at_rt_end_dt, at_rt_details,
 
     # Reason for pancreatectomy / pre-op dx (from dm_data)
     PD_Reason, Family_Hx_DM,
 
-    # Pre-op glycemic status (from dm_data) — all should be non-DM by design
+    # Pre-op glycemic status (from dm_data)
     `HbA1c_Pre-OP`, `eAG_Pre-OP`,
 
-    # Post-op HbA1c trajectory
+    # Post-op HbA1c trajectory (from dm_data)
     HbA1c_Y1, HbA1c_Y2, HbA1c_Y3, HbA1c_Y4, HbA1c_Y5,
     HbA1c_Y6, HbA1c_Y7, HbA1c_Y8, HbA1c_Y9, HbA1c_Y10,
 
-    # Post-op eAG trajectory
-    eAG_Y1, eAG_Y2, eAG_Y3, eAG_Y4, eAG_Y5,
-
-    # Endocrine outcomes
+    # Endocrine outcomes (from dm_data)
     new_onset_DM, DM_date, days_to_DM,
     Insulin, DM_Medication, DM_Medication_start_day,
 
-    # Exocrine outcomes
+    # Exocrine outcomes (from dm_data)
     exo_insufficiency, Date_of_Pancreatic_Ins, days_to_exo_insuff,
     Abd_Pain, Diarrhea, PERT, `PERT enddate`, Cholestyramine,
     exo_symptoms_any,
 
-    # Imaging follow-up
+    # Imaging follow-up (from dm_data)
     `Post-op MR`, `Post-op CT`,
 
-    # Survival / follow-up (from full_data)
-    vital_fu_dt, vital_status_fu, surv_days, surv_mo,
-    recurr, recurr_dt, recurr_type
+    # Recurrence / survival (from full_data)
+    recurr, recurr_dt, recurr_type,
+    recurr_liver, recurr_lung, recurr_perit_oment, recurr_local,
+    recurr_other, recurr_other_specify,
+    vital_fu_dt, vital_status_fu
   )
 
 cat("Final export columns:", ncol(final_data), "\n")
