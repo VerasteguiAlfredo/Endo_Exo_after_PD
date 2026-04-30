@@ -14,9 +14,9 @@ library(lubridate)
 # Update paths as needed
 # -----------------------------------------------------------------------------
 
-dm_data <- read_excel("C:/Users/M320532/Desktop/Research/SONC/Endo Exo after PD/Endo_Exo_after_PD/data/Diabetes_PD.xlsx")
+dm_data <- read_excel("C:/Users/M320532/Desktop/Research/SONC/Endo Exo after PD/Endo_Exo_after_PD/data/raw datasets/Diabetes_PD.xlsx")
 
-full_data <- read_excel("C:/Users/M320532/Desktop/Research/SONC/Endo Exo after PD/Endo_Exo_after_PD/data/pancreatectomy_db.xlsx")
+full_data <- read_excel("C:/Users/M320532/Desktop/Research/SONC/Endo Exo after PD/Endo_Exo_after_PD/data/raw datasets/pancreatectomy_db.xlsx")
 
 # -----------------------------------------------------------------------------
 # 2. CLEAN dm_data
@@ -29,11 +29,8 @@ dm_data_clean <- dm_data %>%
   select(-starts_with("...")) %>%
   # Rename MRN to mayo_id for consistent joining
   rename(mayo_id = MRN) %>%
-  # Convert HbA1c_Y1 and eAG_Pre-OP / eAG_Y1 to numeric (stored as char)
   mutate(
     HbA1c_Y1      = suppressWarnings(as.numeric(HbA1c_Y1)),
-    `eAG_Pre-OP`  = suppressWarnings(as.numeric(`eAG_Pre-OP`)),
-    eAG_Y1        = suppressWarnings(as.numeric(eAG_Y1))
   )
 
 cat("dm_data rows after cleaning:", nrow(dm_data_clean), "\n")
@@ -43,9 +40,6 @@ cat("Unique mayo_ids in dm_data: ", n_distinct(dm_data_clean$mayo_id), "\n\n")
 # 3. FILTER full_data to PD (pancreaticoduodenectomy) patients only
 #    Based on resection_type == "PPPD" or "Whipple" or similar
 #    Adjust the filter values below to match your actual coding in full_data
-
-
-# CHECK: Inspect the filtered data PTS IN THE FINAL COHORT WITH MISSING VALUES FROM FULL_DATA VARIABLES
 # -----------------------------------------------------------------------------
 
 # Inspect what resection types exist
@@ -53,9 +47,7 @@ cat("Resection types in full_data:\n")
 print(table(full_data$resection_type, useNA = "ifany"))
 
 # Filter to PD only — adjust values to match your data
-pd_patients <- full_data %>%
-  filter(grepl("PPPD|Whipple|PD|pancreaticoduodenectomy", 
-               resection_type, ignore.case = TRUE))
+pd_patients <- full_data
 
 cat("\nfull_data rows after filtering to PD only:", nrow(pd_patients), "\n")
 cat("Unique mayo_ids in PD subset:", n_distinct(pd_patients$mayo_id), "\n\n")
@@ -253,7 +245,7 @@ final_data <- merged_data %>%
     PD_Reason, Family_Hx_DM,
 
     # Pre-op glycemic status (from dm_data)
-    `HbA1c_Pre-OP`, `eAG_Pre-OP`,
+    `HbA1c_Pre-OP`,
 
     # Post-op HbA1c trajectory (from dm_data)
     HbA1c_Y1, HbA1c_Y2, HbA1c_Y3, HbA1c_Y4, HbA1c_Y5,
@@ -285,7 +277,7 @@ cat("Final export rows:   ", nrow(final_data), "\n\n")
 # 9. EXPORT TO CSV
 # -----------------------------------------------------------------------------
 
-output_path <- "C:/Users/M320532/Desktop/Research/SONC/Endo Exo after PD/Endo_Exo_after_PD/data/datamerged_endo_exo_PD.csv"
+output_path <- "C:/Users/M320532/Desktop/Research/SONC/Endo Exo after PD/Endo_Exo_after_PD/data/raw datasets/datamerged_endo_exo_PD.csv"
 
 write.csv(final_data, file = output_path, row.names = FALSE, na = "")
 
