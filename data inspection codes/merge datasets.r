@@ -43,6 +43,9 @@ cat("Unique mayo_ids in dm_data: ", n_distinct(dm_data_clean$mayo_id), "\n\n")
 # 3. FILTER full_data to PD (pancreaticoduodenectomy) patients only
 #    Based on resection_type == "PPPD" or "Whipple" or similar
 #    Adjust the filter values below to match your actual coding in full_data
+
+
+# CHECK: Inspect the filtered data PTS IN THE FINAL COHORT WITH MISSING VALUES FROM FULL_DATA VARIABLES
 # -----------------------------------------------------------------------------
 
 # Inspect what resection types exist
