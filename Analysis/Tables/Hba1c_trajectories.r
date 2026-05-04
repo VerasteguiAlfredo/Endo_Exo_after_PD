@@ -478,7 +478,7 @@ fig_combined <- fig_main / fig_ntable +
 
 path_png <- file.path(out_dir, "Figure1_HbA1c_Trajectory.png")
 ggsave(path_png, plot = fig_combined,
-       width = 7, height = 5, dpi = 300, bg = "white")
+       width = 7, height = 5, dpi = 600, bg = "white")
 
 path_pdf <- file.path(out_dir, "Figure1_HbA1c_Trajectory.pdf")
 ggsave(path_pdf, plot = fig_combined,

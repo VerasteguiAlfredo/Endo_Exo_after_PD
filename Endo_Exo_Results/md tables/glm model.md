@@ -46,6 +46,7 @@
 | Adjuvant chemotherapy                              | 188 | 1.01 | 0.35–3.66     | 0.990     |
 
 ### Table 4B. Multivariable Logistic Regression for Predictors of New-Onset Diabetes Mellitus Following Pancreatectomy (Events: 154/741 [20.8%]). Model A: full cohort (N = 735); Model B: HbA1c subcohort (N = 206).
+
 | Variable                                           | N   | OR   | 95% CI        | P-Value   |
 |----------------------------------------------------|-----|------|---------------|-----------|
 | **Model A — Full Cohort (no HbA1c)**               | 735 |      |               |           |

@@ -485,7 +485,7 @@ path_png <- file.path(out_dir, "Figures/Figure2_LMM_HbA1c_Trajectory.png")
 path_pdf <- file.path(out_dir, "Figures/Figure2_LMM_HbA1c_Trajectory.pdf")
 
 ggsave(path_png, plot = fig_lmm,
-       width = 7, height = 5.5, dpi = 300, bg = "white")
+       width = 7, height = 5.5, dpi = 600, bg = "white")
 ggsave(path_pdf, plot = fig_lmm,
        width = 7, height = 5.5, device = cairo_pdf, bg = "white")
 
